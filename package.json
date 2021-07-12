@@ -1,0 +1,22 @@
+{
+  "name": "extractinator",
+  "version": "1.0.0",
+  "description": "The extractinator is an application in Node that facilitates batch creation and extraction of archive files.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WPR381Project/Extractinator.git"
+  },
+  "keywords": [
+    "Project"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/WPR381Project/Extractinator/issues"
+  },
+  "homepage": "https://github.com/WPR381Project/Extractinator#readme"
+}
