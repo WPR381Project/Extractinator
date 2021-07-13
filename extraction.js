@@ -1,3 +1,10 @@
+const extract = require('extract-zip');
+const fs = require('fs');
+var path = require('path');
+const dirpath = './project_folders';
+
+
+
 async function extractZip(source, target) 
 {
     try 
@@ -26,7 +33,7 @@ async function extractZip(source, target)
           const folderName = file.replace(".zip", "");
           if (file.endsWith(".zip")) 
           {
-            zippedFiles.push(folderName);
+            files.push(folderName);
             await extractZip(fullFilePath, path.join(dirPath, "/", folderName));
             await unzipFiles(path.join(dirPath, "/", folderName));
           }
@@ -34,3 +41,5 @@ async function extractZip(source, target)
       })
     );
   };
+
+  unzipFiles(dirpath);
