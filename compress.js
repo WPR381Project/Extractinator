@@ -28,8 +28,6 @@ const SubFolders = () => {
                     currentArchive.directory('subdir/', 'new-subdir');
                 
                     currentArchive.finalize();
-                
-                    //currentFile.close();
                 }
             } 
         });
@@ -62,5 +60,8 @@ const MainFolder = () => {
 
 (async () => {
     await SubFolders();
+
+    setTimeout(() => {}, 1000);
+
     await MainFolder();
 })()
