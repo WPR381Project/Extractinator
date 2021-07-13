@@ -18,5 +18,8 @@
   "bugs": {
     "url": "https://github.com/WPR381Project/Extractinator/issues"
   },
-  "homepage": "https://github.com/WPR381Project/Extractinator#readme"
+  "homepage": "https://github.com/WPR381Project/Extractinator#readme",
+  "dependencies": {
+    "extract-zip": "^2.0.1"
+  }
 }
