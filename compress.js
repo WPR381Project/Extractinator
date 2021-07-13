@@ -1,6 +1,7 @@
 var file_system = require('fs');
 var archiver = require('archiver');
 const path = require('path');
+const { timeout } = require('async');
 
 var archive = archiver('zip');
 
@@ -19,16 +20,16 @@ const SubFolders = () => {
                 else 
                 {
                     var currentArchive = archiver('zip');
-                
                     var currentFile = file_system.createWriteStream('tozip/' + files[i] + '.zip');
                 
                     currentArchive.pipe(currentFile);
                 
                     currentArchive.directory('tozip/' + files[i], false);
+                    currentArchive.directory('subdir/', 'new-subdir');
                 
                     currentArchive.finalize();
                 
-                    currentFile.close();
+                    //currentFile.close();
                 }
             } 
         });
