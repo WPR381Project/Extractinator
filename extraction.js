@@ -33,7 +33,7 @@ async function extractZip(source, target)
           const folderName = file.replace(".zip", "");
           if (file.endsWith(".zip")) 
           {
-            files.push(folderName);
+            zippedFiles.push(folderName);
             await extractZip(fullFilePath, path.join(dirPath, "/", folderName));
             await unzipFiles(path.join(dirPath, "/", folderName));
           }
