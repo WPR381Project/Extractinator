@@ -1,8 +1,9 @@
+const { SSL_OP_EPHEMERAL_RSA } = require('constants');
 const decompress = require('decompress');
 const fs = require('fs');
 const path = require('path');
 const { extname, basename, dirname } = require('path/posix');
-const dirpath = './project_folders';
+const dirpath = "./project_folders";
 
 
 function extractZip(source, target)
@@ -37,16 +38,21 @@ function extractZip(source, target)
 
         } else 
         {
-          const fullFilePath = dirname(file);
-          const folderName = basename(file)+extname(file);
-          if (extname(file)== ".zip") 
+          const target = dirPath;
+          const folderName = basename(file);
+          const source = (dirPath+"/"+folderName);
+          console.log("fullFilePath : ("+target+")   \nfoldername : ("+folderName+")   \nsource :"+source);
+          if (source.endsWith(".zip")) 
           {
-            await extractZip(folderName, fullFilePath);
-            await unzipFiles(path.join(fullFilePath,basename(file)));
+            extractZip(source, target);
+            setTimeout(() => {
+              unzipFiles(target+"/"+basename(file));
+            }, 1000);
+            
           }
         }
       })
     );
   };
-extractZip("./project_folders.zip", "./project_folders")
-  //unzipFiles(dirpath);
+//extractZip("./project_folders/Num5.zip", "./project_folders")
+unzipFiles(dirpath);
