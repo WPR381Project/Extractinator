@@ -1,21 +1,24 @@
-const extract = require('extract-zip');
+const decompress = require('decompress');
 const fs = require('fs');
-var path = require('path');
+const path = require('path');
+const { extname, basename, dirname } = require('path/posix');
 const dirpath = './project_folders';
 
 
-
-async function extractZip(source, target) 
+function extractZip(source, target)
 {
-    try 
-    {
-      await extract(source, { dir: target });
-      console.log("Extraction complete");
-    } catch (err) 
-    {
-      console.log("Oops: extractZip failed", err);
-    }
-  }
+  (async () => {
+    //var sourceParameter = path.format(source);
+      try {
+          const files = await decompress(source, target);
+             // filter: file => path.extname(file.path) !== ".exe";
+          console.log(files);
+      } catch (error) {
+          console.log(error);
+      }
+  
+  })();
+}
 
   const unzipFiles = async function (dirPath) 
   {
@@ -24,18 +27,22 @@ async function extractZip(source, target)
     await Promise.all(
       files.map(async (file) => 
       {
+        
         if (fs.statSync(dirPath + "/" + file).isDirectory()) 
         {
+          files.forEach(file => {
+            console.log(file);       
+          });
           await unzipFiles(dirPath + "/" + file);
+
         } else 
         {
-          const fullFilePath = path.join(dirPath, "/", file);
-          const folderName = file.replace(".zip", "");
-          if (file.endsWith(".zip")) 
+          const fullFilePath = dirname(file);
+          const folderName = basename(file)+extname(file);
+          if (extname(file)== ".zip") 
           {
-            zippedFiles.push(folderName);
-            await extractZip(fullFilePath, path.join(dirPath, "/", folderName));
-            await unzipFiles(path.join(dirPath, "/", folderName));
+            await extractZip(folderName, fullFilePath);
+            await unzipFiles(path.join(fullFilePath,basename(file)));
           }
         }
       })
