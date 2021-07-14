@@ -1,67 +1,44 @@
-var file_system = require('fs');
+var fs = require('fs');
 var archiver = require('archiver');
 const path = require('path');
 const { timeout } = require('async');
 
-var archive = archiver('zip');
+function ZipFile(dir) {
+    var output = fs.createWriteStream(dir + '.zip');
+    var archive = archiver('zip');
 
-archive.on('error', function(err){
-    throw err;
-});
+    output.on('close', function() {
+        console.log(archive.pointer() + ' total bytes');
+        console.log('archiver has been finalized and the output file descriptor has closed.');
+    });
 
-const SubFolders = () => {
-    return new Promise((resolve, reject) => {
-        file_system.readdir('tozip', (err, files) => {
-  
-            for (let i = 0; i < files.length; i++) {
-                if (path.extname(files[i]) != '') {
-                
-                }
-                else 
-                {
-                    var currentArchive = archiver('zip');
-                    var currentFile = file_system.createWriteStream('tozip/' + files[i] + '.zip');
-                
-                    currentArchive.pipe(currentFile);
-                
-                    currentArchive.directory('tozip/' + files[i], false);
-                    currentArchive.directory('subdir/', 'new-subdir');
-                
-                    currentArchive.finalize();
-                }
-            } 
-        });
-        resolve();
-    })
+    archive.on('error', function(err) {
+        throw err;
+    });
+
+    archive.pipe(output);
+
+    archive.directory(dir, false);
+
+    archive.finalize();
 }
 
-const MainFolder = () => {
-    return new Promise((resolve, reject) => {
-        var output = file_system.createWriteStream('tozip.zip');
-
-        output.on('close', function () {
-            console.log(archive.pointer() + ' total bytes');
-            console.log('archiver has been finalized and the output file descriptor has closed.');
+function DeleteFolders(dir) {
+    fs.readdir(dir, (err, files) => {
+        files.forEach(filez => {
+            if (path.extname(filez) == '') {
+                if( fs.existsSync(dir + '/' + filez) ) {
+                    fs.readdirSync(dir + '/' + filez).forEach(function(file) {
+                        var curPath = dir + '/' + filez + "/" + file;
+                        if(fs.lstatSync(curPath).isDirectory()) { // recurse
+                            deleteFolderRecursive(curPath);
+                        } else { // delete file
+                            fs.unlinkSync(curPath);
+                        }
+                    });
+                    fs.rmdirSync(dir + '/' + filez);
+                }
+            }
         });
-
-        archive.pipe(output);
-
-        // append files from a sub-directory, putting its contents at the root of archive
-        archive.directory('tozip', false);
-                
-        // append files from a sub-directory and naming it `new-subdir` within the archive
-        archive.directory('subdir/', 'new-subdir');
-                
-        archive.finalize();
-        resolve();
-    })
+    });
 }
-
-
-(async () => {
-    await SubFolders();
-
-    setTimeout(() => {}, 1000);
-
-    await MainFolder();
-})()
