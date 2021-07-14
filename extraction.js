@@ -10,8 +10,8 @@ function extractZip(source, target)
   (async () => {
     //var sourceParameter = path.format(source);
       try {
-          const files = await decompress(source, target);
-             // filter: file => path.extname(file.path) !== ".exe";
+          const files = await decompress(source,target);
+              //filter: file => path.extname(file.path) == ".zip";
           console.log(files);
       } catch (error) {
           console.log(error);
@@ -28,7 +28,7 @@ function extractZip(source, target)
       files.map(async (file) => 
       {
         
-        if (fs.statSync(dirPath + "/" + file).isDirectory()) 
+        if (fs.statSync(dirPath + "/" + file).isDirectory())
         {
           files.forEach(file => {
             console.log(file);       
@@ -48,5 +48,5 @@ function extractZip(source, target)
       })
     );
   };
-
-  unzipFiles(dirpath);
+extractZip("./project_folders.zip", "./project_folders")
+  //unzipFiles(dirpath);
