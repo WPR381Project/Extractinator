@@ -28,12 +28,15 @@ function extractZip(source, target)
     await Promise.all(
       files.map(async (file) => 
       {
-        
-        if (fs.statSync(dirPath + "/" + file).isDirectory())
-        {
+        setTimeout(() => {
           files.forEach(file => {
             console.log(file);       
           });
+        }, 1000);
+        
+        if (fs.statSync(dirPath + "/" + file).isDirectory())
+        {
+          
           await unzipFiles(dirPath + "/" + file);
 
         } else 
