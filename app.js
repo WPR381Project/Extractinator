@@ -1,3 +1,3 @@
 const compress = require('./compress');
 
-//compress.ZipAllFiles('tozip - Copy (3)');
+compress.Zip('forEctractinator');

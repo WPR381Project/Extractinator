@@ -71,6 +71,16 @@ function ZipAllFiles(dir) {
     setTimeout(function() {DeleteMain(dir);}, 1500);
 }
 
+function Zip(dir) {
+    fs.readdir(dir, (err, files) => {
+        files.forEach(file => {
+            if (path.extname(file) == '') {
+                ZipAllFiles(dir + '/' + file);
+            }
+        });
+    });
+}
+
 module.exports = {
-    ZipAllFiles
+    Zip
 }
