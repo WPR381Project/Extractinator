@@ -1,7 +1,9 @@
-const compress = require('./compress');
+const compress = require('./archive_handling/compress');
+const extract = require('./archive_handling/extraction');
 const readline = require('readline');
 const chalk = require('chalk');
 const figlet = require('figlet');
+const fs = require('fs');
 
 // Intro
 console.log(
@@ -50,7 +52,13 @@ const Compress = () => {
 const Extract = () => {
     return new Promise((resolve, reject) => {
         r1.question('Enter the file directory to extract: ', (answer) => {
-            //extract.Zip(answer);
+            fs.access(answer, function(error) {
+                if (error) { // If it doesnt exist
+                    console.log('Directory does not exist!');
+                } else { // If it exists
+                    extract.Decompress(answer);
+                }
+            })
             resolve();
         })
     })

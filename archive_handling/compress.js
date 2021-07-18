@@ -60,11 +60,13 @@ function ZipAllFiles(dir) {
     fs.readdir(dir, (err, files) => {
         files.forEach(file => {
             if (path.extname(file) == '') {
-                ZipFile(dir + '/' + file);
+                ZipFile(dir + '/' + file); // Creates the filepath dynamically depending on what file it is currently at
             }
         });
     });
 
+    // Compressing subfiles recursively after timeintervals, Timeout is used to ensure that all files are done 
+    // compressing before looping though them
     setTimeout(function() {DeleteFolders(dir);}, 500);
     setTimeout(function() {ZipFile(dir);}, 1000);
     setTimeout(function() {DeleteMain(dir);}, 1500);
