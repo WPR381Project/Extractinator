@@ -1,5 +1,25 @@
 const compress = require('./compress');
 const readline = require('readline');
+const chalk = require('chalk');
+const figlet = require('figlet');
+
+// Intro
+console.log(
+    chalk.yellow(
+      figlet.textSync('Welcome to', { horizontalLayout: 'full' })
+    )
+  );
+  console.log(
+      chalk.blue(
+        figlet.textSync('the amazing', { horizontalLayout: 'full' })
+      )
+    );
+  console.log(
+      chalk.red(
+        figlet.textSync('EXTRACTI - NATOR', { horizontalLayout: 'full' })
+      )
+    );
+  
 
 // Initialize readline
 const r1 = readline.createInterface({
