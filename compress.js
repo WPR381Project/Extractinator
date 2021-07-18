@@ -3,6 +3,7 @@ var archiver = require('archiver');
 const path = require('path');
 const { timeout } = require('async');
 
+// Zipping the folders
 function ZipFile(dir) {
     var output = fs.createWriteStream(dir + '.zip');
     var archive = archiver('zip');
@@ -23,6 +24,7 @@ function ZipFile(dir) {
     archive.finalize();
 }
 
+// Deleting unzipped folders
 function DeleteFolders(dir) {
     fs.readdir(dir, (err, files) => {
         files.forEach(filez => {
@@ -43,6 +45,7 @@ function DeleteFolders(dir) {
     });
 }
 
+// Deleting main folder
 function DeleteMain(dir) {
     if( fs.existsSync(dir) ) {
         fs.readdirSync(dir).forEach(function(file) {
@@ -57,6 +60,7 @@ function DeleteMain(dir) {
     }
 }
 
+// Combining all the functions
 function ZipAllFiles(dir) {
     fs.readdir(dir, (err, files) => {
         files.forEach(file => {
@@ -72,15 +76,23 @@ function ZipAllFiles(dir) {
 }
 
 function Zip(dir) {
-    fs.readdir(dir, (err, files) => {
-        files.forEach(file => {
-            if (path.extname(file) == '') {
-                ZipAllFiles(dir + '/' + file);
-            }
-        });
-    });
+    // Check folder exists
+    fs.access(dir, function(error) {
+        if (error) { // If it doesnt exist
+            console.log('Directory does not exist!');
+        } else { // If it exists
+            fs.readdir(dir, (err, files) => {
+                files.forEach(file => {
+                    if (path.extname(file) == '') {
+                        ZipAllFiles(dir + '/' + file);
+                    }
+                });
+            });
+        }
+    })
 }
 
+// Exporting
 module.exports = {
     Zip
 }
