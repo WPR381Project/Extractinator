@@ -8,11 +8,6 @@ function ZipFile(dir) {
     var output = fs.createWriteStream(dir + '.zip');
     var archive = archiver('zip');
 
-    output.on('close', function() {
-        console.log(archive.pointer() + ' total bytes');
-        console.log('archiver has been finalized and the output file descriptor has closed.');
-    });
-
     archive.on('error', function(err) {
         throw err;
     });
@@ -88,6 +83,7 @@ function Zip(dir) {
                     }
                 });
             });
+            console.log('Done!');
         }
     })
 }
